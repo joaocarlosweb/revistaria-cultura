@@ -3,8 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revistaria Cultura | Vitrine de Curadoria</title>
     
+    <!-- Primary Meta Tags -->
+    <title>Revistaria Cultura | Curadoria para Mentes Criativas</title>
+    <meta name="title" content="Revistaria Cultura | Livros, HQs, Mangás e Acessórios em Caicó, RN">
+    <meta name="description" content="“Revistaria Cultura — sua parada para livros, HQs, mangás e acessórios geek. Encontre títulos exclusivos, coleções especiais e promoções imperdíveis!”">
+    <meta name="keywords" content="revistaria, cultura, livros raros, revistas importadas, tabacaria premium, acessórios de luxo, curadoria editorial, mentes criativas">
+    <meta name="author" content="João Carlos Reis">
+    <link rel="canonical" href="https://joaocarlosweb.github.io/revistaria-cultura/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cultura.art.br/">
+    <meta property="og:title" content="Revistaria Cultura | Curadoria para Mentes Criativas">
+    <meta property="og:description" content="Curadoria exclusiva de livros, revistas e acessórios premium. Tradição e sofisticação desde 1995.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://cultura.art.br/">
+    <meta property="twitter:title" content="Revistaria Cultura | Curadoria para Mentes Criativas">
+    <meta property="twitter:description" content="Curadoria exclusiva de livros, revistas e acessórios premium. Tradição e sofisticação desde 1995.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "Revistaria Cultura",
+      "description": "Curadoria exclusiva de livros raros, revistas importadas e acessórios premium.",
+      "image": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200",
+      "url": "https://cultura.art.br/",
+      "telephone": "+5511999999999",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. Paulista, 1000",
+        "addressLocality": "São Paulo",
+        "addressRegion": "SP",
+        "postalCode": "01310-100",
+        "addressCountry": "BR"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "09:00",
+        "closes": "21:00"
+      }
+    }
+    </script>
+
     <!-- External Styles & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
@@ -127,46 +182,46 @@
     <div id="root"></div>
 
     <script type="text/babel" data-type="module">
-        import { ShoppingBag, Search, X, Plus, Sun, Moon, ArrowRight, Sparkles, Send, Loader2, Bot, MapPin, Phone, Instagram, Trash2, ArrowUpRight, ArrowUp, Menu, BookOpen, Watch, Wind, Minus, Check, ChevronDown } from 'lucide-react';
+        import { ShoppingBag, Search, X, Plus, Sun, Moon, ArrowRight, Sparkles, Send, Loader2, Bot, MapPin, Phone, Instagram, Trash2, ArrowUpRight, ArrowUp, Menu, BookOpen, Watch, Wind, Minus, Check, ChevronDown, History, Award, Globe } from 'lucide-react';
         import { GoogleGenAI } from "@google/genai";
 
         // --- CATALOG DATA ---
         const PRODUCTS = [
             // Magazines (Visualizadas em Ver Todos)
             { id: 'm1', name: 'Vogue Italia - Sept Issue', category: 'Magazines', price: 89.90, description: 'A lendária "September Issue" focada em inovação e alta moda.', image: 'https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?q=80&w=800' },
-            { id: 'm2', name: 'Monocle - The Entrepreneurs', category: 'Magazines', price: 75.00, description: 'Guia global para negócios, design e cultura contemporânea.', image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800' },
-            { id: 'm3', name: 'Kinfolk Volume 42', category: 'Magazines', price: 95.00, description: 'Exploração visual do slow living e conexões humanas.', image: 'https://images.unsplash.com/photo-1543004471-2401c3bdbfe6?q=80&w=800' },
-            { id: 'm4', name: 'Revista Piauí - Mensal', category: 'Magazines', price: 42.00, description: 'O melhor do jornalismo literário e político do Brasil.', image: 'https://images.unsplash.com/photo-1504711432814-0238c7d949d4?q=80&w=800' },
-            { id: 'm5', name: 'The Paris Review - Fall', category: 'Magazines', price: 110.00, description: 'Entrevistas literárias históricas e ficção de vanguarda.', image: 'https://images.unsplash.com/photo-1491843351663-73149e217517?q=80&w=800' },
-            { id: 'm6', name: 'Architectural Digest (AD)', category: 'Magazines', price: 98.00, description: 'A bíblia internacional do design de interiores e arquitetura.', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800' },
-            { id: 'm7', name: 'National Geographic Classic', category: 'Magazines', price: 65.00, description: 'Ciência, aventura e fotografia de tirar o fôlego.', image: 'https://images.unsplash.com/photo-1618397746666-63405ce5d015?q=80&w=800' },
+            { id: 'm2', name: 'Monocle - The Entrepreneurs', category: 'Magazines', price: 75.00, description: 'Guia global para negócios, design e cultura contemporânea.', image: 'https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?q=80&w=800' },
+            { id: 'm3', name: 'Kinfolk Volume 42', category: 'Magazines', price: 95.00, description: 'Exploração visual do slow living e conexões humanas.', image: 'https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?q=80&w=800' },
+            { id: 'm4', name: 'Revista Piauí - Mensal', category: 'Magazines', price: 42.00, description: 'O melhor do jornalismo literário e político do Brasil.', image: 'https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?q=80&w=800' },
+            { id: 'm5', name: 'The Paris Review - Fall', category: 'Magazines', price: 110.00, description: 'Entrevistas literárias históricas e ficção de vanguarda.', image: 'https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?q=80&w=800' },
+            { id: 'm6', name: 'Architectural Digest (AD)', category: 'Magazines', price: 98.00, description: 'A bíblia internacional do design de interiores e arquitetura.', image: 'https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?q=80&w=800' },
+            { id: 'm7', name: 'National Geographic Classic', category: 'Magazines', price: 65.00, description: 'Ciência, aventura e fotografia de tirar o fôlego.', image: 'https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?q=80&w=800' },
             
             // Books
-            { id: 'b1', name: 'O Iluminado (Luxo)', category: 'Books', price: 89.90, description: 'Edição especial do clássico de terror de Stephen King.', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800', isFeatured: true },
-            { id: 'b2', name: 'O Pequeno Príncipe', category: 'Books', price: 45.00, description: 'Edição de colecionador com ilustrações originais.', image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800' },
-            { id: 'b3', name: 'Orgulho e Preconceito', category: 'Books', price: 58.00, description: 'Capa dura exclusiva da obra-prima de Jane Austen.', image: 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=800' },
+            { id: 'b1', name: 'O Iluminado (Luxo)', category: 'Books', price: 89.90, description: 'Edição especial do clássico de terror de Stephen King.', image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800', isFeatured: true },
+            { id: 'b2', name: 'O Pequeno Príncipe', category: 'Books', price: 45.00, description: 'Edição de colecionador com ilustrações originais.', image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800' },
+            { id: 'b3', name: 'Orgulho e Preconceito', category: 'Books', price: 58.00, description: 'Capa dura exclusiva da obra-prima de Jane Austen.', image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800' },
             { id: 'b4', name: '1984 - George Orwell', category: 'Books', price: 62.00, description: 'Edição numerada da distopia mais famosa da literatura.', image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800' },
-            { id: 'b5', name: 'O Hobbit (Tolkien)', category: 'Books', price: 85.00, description: 'Tradução premium com mapas em encarte especial.', image: 'https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?q=80&w=800' },
-            { id: 'b6', name: 'Duna (Frank Herbert)', category: 'Books', price: 92.00, description: 'A maior obra de ficção científica em edição definitiva.', image: 'https://images.unsplash.com/photo-1532012197367-6849412a57ce?q=80&w=800' },
-            { id: 'b7', name: 'Drácula (Bram Stoker)', category: 'Books', price: 68.00, description: 'O mito do vampiro em edição gótica de luxo.', image: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=800' },
+            { id: 'b5', name: 'O Hobbit (Tolkien)', category: 'Books', price: 85.00, description: 'Tradução premium com mapas em encarte especial.', image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800' },
+            { id: 'b6', name: 'Duna (Frank Herbert)', category: 'Books', price: 92.00, description: 'A maior obra de ficção científica em edição definitiva.', image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800' },
+            { id: 'b7', name: 'Drácula (Bram Stoker)', category: 'Books', price: 68.00, description: 'O mito do vampiro em edição gótica de luxo.', image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800' },
 
             // Accessories
-            { id: 'a1', name: 'Boné New Era 59FIFTY', category: 'Accessories', price: 189.00, description: 'Ícone streetwear com bordado de alta definição.', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=800' },
+            { id: 'a1', name: 'Boné New Era 59FIFTY', category: 'Accessories', price: 189.00, description: 'Ícone streetwear com bordado de alta definição.', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800' },
             { id: 'a2', name: 'Seiko 5 Automatic', category: 'Accessories', price: 1450.00, description: 'Relógio mecânico japonês de precisão absoluta.', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800', isFeatured: true },
-            { id: 'a3', name: 'Carteira Bellroy Slim', category: 'Accessories', price: 320.00, description: 'Couro premium curtido de forma sustentável.', image: 'https://images.unsplash.com/photo-1627123430985-63df0288be82?q=80&w=800' },
-            { id: 'a4', name: 'Mochila Peak Design', category: 'Accessories', price: 1850.00, description: 'A favorita dos nômades digitais e fotógrafos.', image: 'https://images.unsplash.com/photo-1553062407-98eeb14c20df?q=80&w=800' },
-            { id: 'a5', name: 'Ray-Ban Clubmaster', category: 'Accessories', price: 890.00, description: 'Design vintage para intelectuais modernos.', image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800' },
-            { id: 'a6', name: 'Relógio Nero Minimal', category: 'Accessories', price: 1150.00, description: 'Minimalismo escandinavo com pulseira mesh.', image: 'https://images.unsplash.com/photo-1508685096489-7a689470145b?q=80&w=800' },
-            { id: 'a7', name: 'Boné Heritage Sarja', category: 'Accessories', price: 145.00, description: 'Algodão de alta gramatura com lavagem vintage.', image: 'https://images.unsplash.com/photo-1556306535-0f09a537f0a3?q=80&w=800' },
+            { id: 'a3', name: 'Carteira Bellroy Slim', category: 'Accessories', price: 320.00, description: 'Couro premium curtido de forma sustentável.', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800' },
+            { id: 'a4', name: 'Mochila Peak Design', category: 'Accessories', price: 1850.00, description: 'A favorita dos nômades digitais e fotógrafos.', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800' },
+            { id: 'a5', name: 'Ray-Ban Clubmaster', category: 'Accessories', price: 890.00, description: 'Design vintage para intelectuais modernos.', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800' },
+            { id: 'a6', name: 'Relógio Nero Minimal', category: 'Accessories', price: 1150.00, description: 'Minimalismo escandinavo com pulseira mesh.', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800' },
+            { id: 'a7', name: 'Boné Heritage Sarja', category: 'Accessories', price: 145.00, description: 'Algodão de alta gramatura com lavagem vintage.', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800' },
 
             // Tabacaria
-            { id: 't1', name: 'Cachimbo Savinelli', category: 'Tabacaria', price: 950.00, description: 'Madeira briar italiana esculpida à mão.', image: 'https://images.unsplash.com/photo-1589131013405-f938c41ec2b2?q=80&w=800' },
-            { id: 't2', name: 'Isqueiro Zippo Brushed', category: 'Tabacaria', price: 420.00, description: 'Garantia vitalícia e som icônico.', image: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?q=80&w=800' },
-            { id: 't3', name: 'Narguilé Khalil Mamoon', category: 'Tabacaria', price: 850.00, description: 'Autenticidade egípcia em tri-metal.', image: 'https://images.unsplash.com/photo-1534067783941-51c9c23eccfd?q=80&w=800', isFeatured: true },
-            { id: 't4', name: 'Tangiers Cane Mint', category: 'Tabacaria', price: 120.00, description: 'A menta noir definitiva para lounge.', image: 'https://images.unsplash.com/photo-1527137341206-182ad48c59ff?q=80&w=800' },
-            { id: 't5', name: 'Cortador de Charutos S.T.', category: 'Tabacaria', price: 1200.00, description: 'Lâminas de aço cirúrgico para corte preciso.', image: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?q=80&w=800' },
+            { id: 't1', name: 'Cachimbo Savinelli', category: 'Tabacaria', price: 950.00, description: 'Madeira briar italiana esculpida à mão.', image: 'https://images.unsplash.com/photo-1529154691717-3306083d869e?q=80&w=800' },
+            { id: 't2', name: 'Isqueiro Zippo Brushed', category: 'Tabacaria', price: 420.00, description: 'Garantia vitalícia e som icônico.', image: 'https://images.unsplash.com/photo-1529154691717-3306083d869e?q=80&w=800' },
+            { id: 't3', name: 'Narguilé Khalil Mamoon', category: 'Tabacaria', price: 850.00, description: 'Autenticidade egípcia em tri-metal.', image: 'https://images.unsplash.com/photo-1529154691717-3306083d869e?q=80&w=800', isFeatured: true },
+            { id: 't4', name: 'Tangiers Cane Mint', category: 'Tabacaria', price: 120.00, description: 'A menta noir definitiva para lounge.', image: 'https://images.unsplash.com/photo-1529154691717-3306083d869e?q=80&w=800' },
+            { id: 't5', name: 'Cortador de Charutos S.T.', category: 'Tabacaria', price: 1200.00, description: 'Lâminas de aço cirúrgico para corte preciso.', image: 'https://images.unsplash.com/photo-1529154691717-3306083d869e?q=80&w=800' },
             { id: 't6', name: 'Steamulation Pro X', category: 'Tabacaria', price: 2900.00, description: 'Engenharia alemã para narguilé premium.', image: 'https://images.unsplash.com/photo-1529154691717-3306083d869e?q=80&w=800' },
-            { id: 't7', name: 'Fogareiro Blindado Art', category: 'Tabacaria', price: 125.00, description: 'Segurança e agilidade para o carvão.', image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800' }
+            { id: 't7', name: 'Fogareiro Blindado Art', category: 'Tabacaria', price: 125.00, description: 'Segurança e agilidade para o carvão.', image: 'https://images.unsplash.com/photo-1529154691717-3306083d869e?q=80&w=800' }
         ];
 
         // --- COMPONENTS ---
@@ -194,14 +249,14 @@
                             <button 
                                 className="md:hidden dark:text-white p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-xl transition-colors z-[110]" 
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                aria-label="Menu"
+                                aria-label="Abrir Menu de Navegação"
                             >
                                 {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
                             </button>
                             
                             <div className="flex flex-col cursor-pointer group" onClick={() => { window.scrollTo({top: 0, behavior: 'smooth'}); closeMenu(); onResetFilter(); }}>
                                 <span className="text-2xl sm:text-3xl font-bold tracking-tighter serif text-gray-900 dark:text-white leading-none group-hover:text-red-600 transition-colors">Cultura</span>
-                                <span className="text-[7px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-red-600 font-bold mt-1">Revistaria & Co.</span>
+                                <span className="text-[7px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-red-600 font-bold mt-1">Revistaria</span>
                             </div>
                         </div>
                         
@@ -211,21 +266,21 @@
                             <a href="#books" className="hover:text-red-600 transition-colors whitespace-nowrap">Livros</a>
                             <a href="#accessories" className="hover:text-red-600 transition-colors whitespace-nowrap">Acessórios</a>
                             <a href="#tabacaria" className="hover:text-red-600 transition-colors whitespace-nowrap">Tabacaria</a>
-                            <a href="#footer" className="hover:text-red-600 transition-colors whitespace-nowrap">Sobre</a>
+                            <a href="#about" className="hover:text-red-600 transition-colors whitespace-nowrap">Sobre</a>
                         </div>
 
                         <div className="flex items-center gap-2 sm:gap-4">
                             <button 
                                 onClick={onToggleTheme} 
                                 className="p-2.5 bg-gray-50 dark:bg-zinc-900/50 rounded-xl text-gray-500 hover:text-red-600 transition-all border border-transparent dark:border-zinc-800"
-                                aria-label="Alternar Tema"
+                                aria-label={darkMode ? "Ativar Modo Claro" : "Ativar Modo Escuro"}
                             >
                                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
                             </button>
                             <button 
                                 className={`relative p-2.5 rounded-xl text-white shadow-lg transition-all ${isAdding ? 'bg-red-600 animate-cart-bounce shadow-[0_0_30px_rgba(220,38,38,0.6)]' : 'bg-black dark:bg-red-600 neon-glow neon-btn-hover'}`} 
                                 onClick={onCartClick}
-                                aria-label="Abrir Sacola"
+                                aria-label={`Abrir Sacola de Compras com ${cartCount} itens`}
                             >
                                 <ShoppingBag size={20} />
                                 {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-white dark:bg-black text-red-600 text-[9px] w-5 h-5 flex items-center justify-center rounded-full font-black border border-red-600 shadow-sm">{cartCount}</span>}
@@ -242,11 +297,12 @@
                                 <a href="#books" className="text-4xl font-bold serif border-b dark:border-zinc-800 pb-4 text-zinc-900 dark:text-white" onClick={closeMenu}>Livros</a>
                                 <a href="#accessories" className="text-4xl font-bold serif border-b dark:border-zinc-800 pb-4 text-zinc-900 dark:text-white" onClick={closeMenu}>Acessórios</a>
                                 <a href="#tabacaria" className="text-4xl font-bold serif border-b dark:border-zinc-800 pb-4 text-zinc-900 dark:text-white" onClick={closeMenu}>Tabacaria</a>
+                                <a href="#about" className="text-4xl font-bold serif border-b dark:border-zinc-800 pb-4 text-zinc-900 dark:text-white" onClick={closeMenu}>Sobre</a>
                                 
                                 <div className="mt-8 pt-8 border-t dark:border-zinc-800">
                                     <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 mb-6 block">Institucional</span>
                                     <div className="flex flex-col gap-4">
-                                        <a href="#footer" className="text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-red-600" onClick={closeMenu}>Sobre Nós</a>
+                                        <a href="#about" className="text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-red-600" onClick={closeMenu}>Nossa História</a>
                                         <a href="#footer" className="text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-red-600" onClick={closeMenu}>Atendimento</a>
                                     </div>
                                 </div>
@@ -275,15 +331,15 @@
             };
 
             return (
-                <div className="group bg-white dark:bg-zinc-900/40 rounded-[32px] overflow-hidden border border-gray-100 dark:border-zinc-800 flex flex-col h-full hover:shadow-[0_40px_80px_-15px_rgba(220,38,38,0.1)] transition-all duration-500">
+                <article className="group bg-white dark:bg-zinc-900/40 rounded-[32px] overflow-hidden border border-gray-100 dark:border-zinc-800 flex flex-col h-full hover:shadow-[0_40px_80px_-15px_rgba(220,38,38,0.1)] transition-all duration-500">
                     <div className="relative aspect-[4/5] m-2.5 rounded-[24px] overflow-hidden bg-gray-50 dark:bg-zinc-800">
                         <img 
                             src={product.image} 
-                            alt={`Imagem do produto: ${product.name}, Categoria ${product.category}`} 
+                            alt={`Produto: ${product.name}. Categoria: ${product.category}. ${product.description}`} 
                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" 
                             loading="lazy" 
                         />
-                        {product.isFeatured && <span className="absolute top-4 left-4 bg-red-600 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">Featured</span>}
+                        {product.isFeatured && <span className="absolute top-4 left-4 bg-red-600 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">Destaque</span>}
                     </div>
                     <div className="p-6 flex flex-col flex-grow">
                         <span className="text-[10px] text-red-600 font-black uppercase tracking-[0.2em] mb-2">{product.category}</span>
@@ -293,6 +349,7 @@
                             <span className="text-2xl font-bold text-gray-900 dark:text-white serif">R$ {product.price.toFixed(2)}</span>
                             <button 
                                 onClick={handleAdd} 
+                                aria-label={`Adicionar ${product.name} ao carrinho`}
                                 className={`p-2.5 rounded-xl transition-all active:scale-90 shadow-lg ${isSuccess ? 'bg-green-600 text-white shadow-green-600/20' : 'bg-red-600 text-white hover:bg-red-500 shadow-red-600/20'}`}
                             >
                                 <div className="btn-checkmark">
@@ -301,12 +358,12 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </article>
             );
         };
 
         const FloatingNotification = ({ message, isVisible }) => (
-            <div className={`fixed bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 z-[200] pointer-events-none transition-all duration-500 w-[90%] sm:w-auto ${isVisible ? 'animate-notification-in' : 'animate-notification-out'}`}>
+            <div role="status" aria-live="polite" className={`fixed bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 z-[200] pointer-events-none transition-all duration-500 w-[90%] sm:w-auto ${isVisible ? 'animate-notification-in' : 'animate-notification-out'}`}>
                 <div className="bg-zinc-900/95 dark:bg-white/98 backdrop-blur-2xl text-white dark:text-black px-6 sm:px-8 py-4 sm:py-5 rounded-[20px] sm:rounded-full shadow-2xl border border-white/10 dark:border-black/5 flex items-center justify-between sm:justify-start gap-4">
                     <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
                         <div className="bg-green-500 dark:bg-green-600 p-2 rounded-full text-white flex-shrink-0 animate-in zoom-in spin-in duration-500">
@@ -324,16 +381,16 @@
             const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             if (!isOpen) return null;
             return (
-                <div className={`fixed inset-0 z-[150] ${darkMode ? 'dark' : ''}`}>
+                <aside role="dialog" aria-modal="true" aria-labelledby="cart-title" className={`fixed inset-0 z-[150] ${darkMode ? 'dark' : ''}`}>
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={onClose} />
                     <div className="absolute top-0 right-0 h-full w-full sm:max-w-md bg-white dark:bg-zinc-950 flex flex-col animate-in slide-in-from-right duration-500 ease-out border-l dark:border-zinc-900 shadow-2xl">
                         {/* Header Sacola */}
                         <div className="p-8 pb-6 flex justify-between items-center border-b dark:border-zinc-900/50">
                             <div className="flex flex-col">
-                                <h2 className="text-3xl font-bold serif dark:text-white leading-tight">Sacola</h2>
+                                <h2 id="cart-title" className="text-3xl font-bold serif dark:text-white leading-tight">Sacola</h2>
                                 <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 mt-1">{items.length} {items.length === 1 ? 'item' : 'itens'} na curadoria</span>
                             </div>
-                            <button onClick={onClose} className="p-3 bg-gray-50 dark:bg-zinc-900 rounded-full text-zinc-400 hover:text-red-600 transition-all">
+                            <button onClick={onClose} aria-label="Fechar Sacola" className="p-3 bg-gray-50 dark:bg-zinc-900 rounded-full text-zinc-400 hover:text-red-600 transition-all">
                                 <X size={24} />
                             </button>
                         </div>
@@ -355,7 +412,7 @@
                                     <div className="relative w-24 h-32 flex-shrink-0 overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900">
                                         <img 
                                             src={item.image} 
-                                            alt={`Imagem do produto: ${item.name}`} 
+                                            alt={item.name} 
                                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
                                         />
                                     </div>
@@ -363,7 +420,7 @@
                                         <div>
                                             <div className="flex justify-between items-start gap-4">
                                                 <h4 className="text-sm font-bold dark:text-white leading-tight group-hover:text-red-600 transition-colors">{item.name}</h4>
-                                                <button onClick={() => onRemove(item.id)} className="p-1 text-zinc-300 hover:text-red-600 transition-colors">
+                                                <button onClick={() => onRemove(item.id)} aria-label={`Remover ${item.name} da sacola`} className="p-1 text-zinc-300 hover:text-red-600 transition-colors">
                                                     <Trash2 size={16} />
                                                 </button>
                                             </div>
@@ -372,11 +429,11 @@
                                         
                                         <div className="flex items-center justify-between mt-auto">
                                             <div className="flex items-center bg-zinc-50 dark:bg-zinc-900 rounded-xl p-1 border dark:border-zinc-800">
-                                                <button onClick={() => onUpdateQuantity(item.id, -1)} className="w-7 h-7 flex items-center justify-center dark:text-white hover:text-red-600 transition-colors">
+                                                <button onClick={() => onUpdateQuantity(item.id, -1)} aria-label="Diminuir quantidade" className="w-7 h-7 flex items-center justify-center dark:text-white hover:text-red-600 transition-colors">
                                                     <Minus size={12} />
                                                 </button>
                                                 <span className="w-8 text-center text-[11px] font-black dark:text-white">{item.quantity}</span>
-                                                <button onClick={() => onUpdateQuantity(item.id, 1)} className="w-7 h-7 flex items-center justify-center dark:text-white hover:text-red-600 transition-colors">
+                                                <button onClick={() => onUpdateQuantity(item.id, 1)} aria-label="Aumentar quantidade" className="w-7 h-7 flex items-center justify-center dark:text-white hover:text-red-600 transition-colors">
                                                     <Plus size={12} />
                                                 </button>
                                             </div>
@@ -411,7 +468,7 @@
                             </div>
                         )}
                     </div>
-                </div>
+                </aside>
             );
         };
 
@@ -443,21 +500,21 @@
             return (
                 <div className={`fixed bottom-8 right-8 z-[60] ${darkMode ? 'dark' : ''}`}>
                     {isOpen ? (
-                        <div className="bg-white dark:bg-zinc-950 rounded-[32px] shadow-2xl w-80 sm:w-96 border dark:border-zinc-800 overflow-hidden animate-in zoom-in duration-300">
+                        <div role="complementary" aria-label="Assistente de Curadoria" className="bg-white dark:bg-zinc-950 rounded-[32px] shadow-2xl w-80 sm:w-96 border dark:border-zinc-800 overflow-hidden animate-in zoom-in duration-300">
                             <div className="bg-red-600 p-5 text-white flex justify-between items-center">
                                 <div className="flex items-center gap-3"><Bot size={20} /><span className="font-black text-[10px] uppercase tracking-widest">Curador Editorial</span></div>
-                                <button onClick={() => setIsOpen(false)}><X size={20} /></button>
+                                <button onClick={() => setIsOpen(false)} aria-label="Fechar Assistente"><X size={20} /></button>
                             </div>
                             <div className="p-6 h-80 overflow-y-auto bg-gray-50/50 dark:bg-zinc-900/30">
                                 {response ? <div className="bg-white dark:bg-zinc-800 p-5 rounded-2xl text-xs leading-relaxed dark:text-gray-200 shadow-sm">{response}</div> : loading ? <div className="h-full flex flex-col items-center justify-center text-red-600"><Loader2 className="animate-spin mb-2" size={32} /><span className="text-[10px] font-black uppercase tracking-widest">Pesquisando...</span></div> : <p className="text-center text-gray-400 italic text-xs py-20 serif">"Qual seu interesse literário hoje?"</p>}
                             </div>
                             <form onSubmit={handleAsk} className="p-4 bg-white dark:bg-zinc-950 border-t dark:border-zinc-800 flex gap-2">
-                                <input type="text" placeholder="Deseja uma recomendação?" value={query} onChange={(e) => setQuery(e.target.value)} className="flex-grow text-xs bg-gray-50 dark:bg-zinc-900 border-none rounded-xl px-5 py-3 dark:text-white" />
-                                <button type="submit" className="bg-red-600 text-white p-3 rounded-xl shadow-lg shadow-red-600/20"><Send size={18} /></button>
+                                <input type="text" placeholder="Deseja uma recomendação?" aria-label="Sua pergunta para o Curador" value={query} onChange={(e) => setQuery(e.target.value)} className="flex-grow text-xs bg-gray-50 dark:bg-zinc-900 border-none rounded-xl px-5 py-3 dark:text-white" />
+                                <button type="submit" aria-label="Enviar Pergunta" className="bg-red-600 text-white p-3 rounded-xl shadow-lg shadow-red-600/20"><Send size={18} /></button>
                             </form>
                         </div>
                     ) : (
-                        <button onClick={() => setIsOpen(true)} className="bg-red-600 text-white p-5 rounded-[24px] shadow-2xl shadow-red-600/40 hover:scale-105 transition-all flex items-center gap-3 group neon-glow neon-btn-hover">
+                        <button onClick={() => setIsOpen(true)} aria-label="Abrir Assistente de Curadoria por IA" className="bg-red-600 text-white p-5 rounded-[24px] shadow-2xl shadow-red-600/40 hover:scale-105 transition-all flex items-center gap-3 group neon-glow neon-btn-hover">
                             <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap font-black text-[10px] uppercase tracking-[0.2em]">Curadoria Ativa</span>
                             <Sparkles size={24} />
                         </button>
@@ -485,6 +542,7 @@
             return (
                 <button 
                     onClick={scrollToTop}
+                    aria-label="Voltar ao topo da página"
                     className={`fixed bottom-8 left-8 z-[60] bg-white dark:bg-zinc-900 p-4 rounded-2xl shadow-2xl border dark:border-zinc-800 transition-all duration-500 hover:text-red-600 active:scale-90 ${visible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}
                 >
                     <ArrowUp size={24} className="animate-float" />
@@ -534,7 +592,6 @@
             const updateQty = (id, delta) => setCartItems(prev => prev.map(i => i.id === id ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i));
             const remove = (id) => setCartItems(prev => prev.filter(i => i.id !== id));
 
-            // Categorias sincronizadas conforme solicitado
             const categories = ['All', 'Books', 'Accessories', 'Tabacaria'];
 
             const sections = [
@@ -547,77 +604,146 @@
                 <div className="bg-white dark:bg-black transition-colors duration-500 min-h-screen overflow-x-hidden">
                     <Navbar cartCount={cartItems.reduce((s, i) => s + i.quantity, 0)} onCartClick={() => setIsCartOpen(true)} isAdding={isAdding} darkMode={darkMode} onToggleTheme={() => setDarkMode(!darkMode)} onResetFilter={() => setActiveCategory('All')} />
                     
-                    <header className="relative min-h-[70vh] md:h-[85vh] flex items-center bg-zinc-50 dark:bg-zinc-950 overflow-hidden transition-colors duration-500 py-20 md:py-0">
-                        <div className="absolute inset-0 z-0">
-                            <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2000" className="w-full h-full object-cover opacity-20 dark:opacity-40 grayscale" alt="Library Background" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-black via-white/40 dark:via-black/40 to-transparent" />
-                        </div>
-                        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
-                            <div className="max-w-4xl">
-                                <span className="bg-red-600 text-white text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] px-4 md:px-6 py-2 md:py-2.5 rounded-full mb-8 md:mb-12 inline-block shadow-[0_0_20px_rgba(220,38,38,0.5)]">Legacy Selection</span>
-                                <h1 className="text-5xl sm:text-6xl lg:text-[7rem] xl:text-[8rem] font-bold mb-8 md:mb-12 serif tracking-tighter leading-[0.9] text-zinc-900 dark:text-white transition-colors">
-                                    Curadoria para <br className="hidden sm:block"/>
-                                    <span className="text-red-600 italic font-normal">Mentes Criativas.</span>
-                                </h1>
-                                <p className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-400 font-light mb-12 md:mb-16 max-w-2xl leading-relaxed transition-colors">
-                                    Do papel à cultura, descubra os itens que compõem um acervo pessoal extraordinário.
-                                </p>
-                                <div className="flex flex-col sm:flex-row gap-4 md:gap-8">
-                                    <a href="#vitrine" onClick={() => setActiveCategory('All')} className="bg-red-600 text-white px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:bg-red-500 transition-all flex items-center justify-center gap-3 neon-glow neon-btn-hover">
-                                        Explorar Catálogo <ArrowRight size={20} />
-                                    </a>
-                                    <button className="px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] border-2 border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white hover:border-red-600 hover:bg-red-600/5 transition-all neon-glow neon-btn-hover">
-                                        VIP Newsletter
-                                    </button>
-                                </div>
+                    <main>
+                        <header className="relative min-h-[70vh] md:h-[85vh] flex items-center bg-zinc-50 dark:bg-zinc-950 overflow-hidden transition-colors duration-500 py-20 md:py-0">
+                            <div className="absolute inset-0 z-0">
+                                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2000" className="w-full h-full object-cover opacity-20 dark:opacity-40 grayscale" alt="Biblioteca clássica com livros antigos ao fundo" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-black via-white/40 dark:via-black/40 to-transparent" />
                             </div>
-                        </div>
-                    </header>
-
-                    {/* CATÁLOGO GERAL */}
-                    <section id="vitrine" className="py-24 md:py-40 bg-white dark:bg-black border-t dark:border-zinc-900 transition-colors">
-                        <div className="max-w-7xl mx-auto px-6 md:px-12">
-                            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-10">
-                                <div className="max-w-lg">
-                                    <h2 className="text-4xl md:text-7xl font-bold serif mb-4 md:mb-6 dark:text-white transition-colors">Acervo Geral</h2>
-                                    <p className="text-zinc-500 dark:text-zinc-500 text-sm font-light transition-colors">Navegue em nossa curadoria completa de itens exclusivos, filtrando por suas preferências editoriais.</p>
-                                </div>
-                                <div className="flex flex-wrap gap-2 md:gap-3">
-                                    {categories.map(cat => (
-                                        <button 
-                                            key={cat} 
-                                            onClick={() => setActiveCategory(cat)} 
-                                            className={`px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] transition-all border ${activeCategory === cat ? 'bg-red-600 text-white border-red-600 shadow-xl shadow-red-600/30' : 'bg-transparent text-gray-400 border-gray-100 dark:border-zinc-800 hover:border-red-600'}`}
-                                        >
-                                            {cat === 'All' ? 'Ver Todos' : cat === 'Books' ? 'Livros' : cat === 'Accessories' ? 'Acessórios' : cat}
+                            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
+                                <div className="max-w-4xl">
+                                    <span className="bg-red-600 text-white text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] px-4 md:px-6 py-2 md:py-2.5 rounded-full mb-8 md:mb-12 inline-block shadow-[0_0_20px_rgba(220,38,38,0.5)]">Revistaria Cultura</span>
+                                    <h1 className="text-5xl sm:text-6xl lg:text-[7rem] xl:text-[8rem] font-bold mb-8 md:mb-12 serif tracking-tighter leading-[0.9] text-zinc-900 dark:text-white transition-colors">
+                                        O caminho para <br className="hidden sm:block"/>
+                                        <span className="text-red-600 italic font-normal">Mentes Criativas.</span>
+                                    </h1>
+                                    <p className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-400 font-light mb-12 md:mb-16 max-w-2xl leading-relaxed transition-colors">
+                                        “Mais que uma revistaria: um espaço feito para quem ama leitura, cultura geek e colecionáveis. Encontre o item perfeito para sua coleção.”
+                                    </p>
+                                    <div className="flex flex-col sm:flex-row gap-4 md:gap-8">
+                                        <a href="#vitrine" onClick={() => setActiveCategory('All')} className="bg-red-600 text-white px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] shadow-[0_0_30_rgba(220,38,38,0.4)] hover:bg-red-500 transition-all flex items-center justify-center gap-3 neon-glow neon-btn-hover">
+                                            Explorar Catálogo <ArrowRight size={20} />
+                                        </a>
+                                        <button className="px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] border-2 border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white hover:border-red-600 hover:bg-red-600/5 transition-all neon-glow neon-btn-hover">
+                                            VIP WhatsApp
                                         </button>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 md:gap-x-10 gap-y-12 md:gap-y-16">
-                                {filtered.map(p => <ProductCard key={p.id} product={p} onAddToCart={addToCart} />)}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* SEÇÕES ESPECÍFICAS */}
-                    {sections.map((sec, idx) => (
-                        <section key={sec.id} id={sec.id} className={`py-24 md:py-40 ${idx % 2 === 0 ? 'bg-zinc-50 dark:bg-zinc-950' : 'bg-white dark:bg-black'} transition-colors duration-500`}>
-                            <div className="max-w-7xl mx-auto px-6 md:px-12">
-                                <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 md:mb-24 gap-10">
-                                    <div className="max-w-2xl">
-                                        <div className="flex items-center gap-4 mb-4 md:mb-6">{sec.icon} <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] text-red-600">Editorial Choice</span></div>
-                                        <h2 className="text-4xl md:text-7xl font-bold serif mb-6 md:mb-8 dark:text-white transition-colors">{sec.title}</h2>
-                                        <p className="text-zinc-600 dark:text-zinc-500 text-base md:text-lg font-light leading-relaxed transition-colors">{sec.desc}</p>
                                     </div>
-                                    <button onClick={() => {setActiveCategory(sec.category); window.location.hash = "#vitrine"}} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest border-b-2 border-red-600 pb-2 md:pb-3 hover:text-red-600 dark:text-white dark:hover:text-red-600 transition-all flex items-center gap-2 group">Ver coleção <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /></button>
                                 </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
-                                    {PRODUCTS.filter(p => p.category === sec.category).slice(0, 4).map(p => <ProductCard key={p.id} product={p} onAddToCart={addToCart} />)}
+                            </div>
+                        </header>
+
+                        {/* SESSÃO SOBRE */}
+                        <section id="about" className="py-24 md:py-48 bg-zinc-50 dark:bg-zinc-950 transition-colors overflow-hidden">
+                            <div className="max-w-7xl mx-auto px-6 md:px-12">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-32 items-center">
+                                    <div className="relative group">
+                                        <div className="relative aspect-[3/4] rounded-[40px] overflow-hidden shadow-2xl">
+                                            <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1200" alt="Interior da Revistaria Cultura com estantes de madeira e luz suave" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                                        </div>
+                                        {/* Selo de Tradição */}
+                                        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-red-600 rounded-full flex flex-col items-center justify-center text-white shadow-2xl animate-float border-8 border-white dark:border-zinc-950 z-20">
+                                            <span className="text-[10px] font-black uppercase tracking-widest mb-1">Est.</span>
+                                            <span className="text-3xl font-bold serif">1995</span>
+                                            <Award size={20} className="mt-2" />
+                                        </div>
+                                        <div className="absolute -top-6 -left-6 w-32 h-32 border-2 border-red-600/30 rounded-full animate-pulse" />
+                                    </div>
+
+                                    <div className="space-y-12">
+                                        <header>
+                                            <div className="flex items-center gap-4 mb-6">
+                                                <div className="h-px w-12 bg-red-600" />
+                                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-red-600">Nossa Essência</span>
+                                            </div>
+                                            <h2 className="text-4xl md:text-7xl font-bold serif mb-8 dark:text-white transition-colors leading-[1.1]">
+                                                Quase três décadas de <span className="italic font-normal text-red-600">Paixão Editorial.</span>
+                                            </h2>
+                                        </header>
+                                        
+                                        <div className="space-y-8">
+                                            <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 font-light leading-relaxed serif italic">
+                                                "Acreditamos que o papel não é apenas um suporte para informações, mas um refúgio tátil para mentes inquietas."
+                                            </p>
+                                            <p className="text-zinc-500 dark:text-zinc-500 text-sm md:text-base leading-relaxed font-normal">
+                                                Fundada em 1995 no coração da Avenida Paulista, a Revistaria Cultura nasceu com o propósito de ser mais do que uma banca; queríamos ser curadores de inspiração. Hoje, somos referência nacional em edições de colecionador, revistas internacionais de vanguarda e itens que celebram o prazer da descoberta.
+                                            </p>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-8 pt-8">
+                                            <div className="space-y-2">
+                                                <div className="flex items-center gap-3 text-red-600 mb-2">
+                                                    <Globe size={20} />
+                                                    <span className="text-[9px] font-black uppercase tracking-widest">Global Reach</span>
+                                                </div>
+                                                <p className="text-[11px] text-zinc-400 uppercase tracking-widest leading-relaxed font-bold">Importação direta das principais editoras de Londres, Paris e Milão.</p>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <div className="flex items-center gap-3 text-red-600 mb-2">
+                                                    <Award size={20} />
+                                                    <span className="text-[9px] font-black uppercase tracking-widest">Premium Care</span>
+                                                </div>
+                                                <p className="text-[11px] text-zinc-400 uppercase tracking-widest leading-relaxed font-bold">Manuseio especializado para garantir a integridade de cada edição rara.</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-8">
+                                            <a href="#footer" className="text-[10px] font-black uppercase tracking-[0.3em] border-b-2 border-red-600 pb-3 text-zinc-900 dark:text-white hover:text-red-600 transition-all flex items-center gap-3 group">
+                                                Visite nossa loja física <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>
-                    ))}
+
+                        {/* CATÁLOGO GERAL */}
+                        <section id="vitrine" className="py-24 md:py-40 bg-white dark:bg-black border-t dark:border-zinc-900 transition-colors">
+                            <div className="max-w-7xl mx-auto px-6 md:px-12">
+                                <header className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-10">
+                                    <div className="max-w-lg">
+                                        <h2 className="text-4xl md:text-7xl font-bold serif mb-4 md:mb-6 dark:text-white transition-colors">Acervo Geral</h2>
+                                        <p className="text-zinc-500 dark:text-zinc-500 text-sm font-light transition-colors">Navegue em nossa curadoria completa de itens exclusivos, filtrando por suas preferências editoriais.</p>
+                                    </div>
+                                    <div role="tablist" aria-label="Categorias de produtos" className="flex flex-wrap gap-2 md:gap-3">
+                                        {categories.map(cat => (
+                                            <button 
+                                                key={cat} 
+                                                role="tab"
+                                                aria-selected={activeCategory === cat}
+                                                onClick={() => setActiveCategory(cat)} 
+                                                className={`px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] transition-all border ${activeCategory === cat ? 'bg-red-600 text-white border-red-600 shadow-xl shadow-red-600/30' : 'bg-transparent text-gray-400 border-gray-100 dark:border-zinc-800 hover:border-red-600'}`}
+                                            >
+                                                {cat === 'All' ? 'Ver Todos' : cat === 'Books' ? 'Livros' : cat === 'Accessories' ? 'Acessórios' : cat}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </header>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 md:gap-x-10 gap-y-12 md:gap-y-16">
+                                    {filtered.map(p => <ProductCard key={p.id} product={p} onAddToCart={addToCart} />)}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* SEÇÕES ESPECÍFICAS */}
+                        {sections.map((sec, idx) => (
+                            <section key={sec.id} id={sec.id} className={`py-24 md:py-40 ${idx % 2 === 0 ? 'bg-zinc-50 dark:bg-zinc-950' : 'bg-white dark:bg-black'} transition-colors duration-500`}>
+                                <div className="max-w-7xl mx-auto px-6 md:px-12">
+                                    <header className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 md:mb-24 gap-10">
+                                        <div className="max-w-2xl">
+                                            <div className="flex items-center gap-4 mb-4 md:mb-6">{sec.icon} <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] text-red-600">Escolha Editorial</span></div>
+                                            <h2 className="text-4xl md:text-7xl font-bold serif mb-6 md:mb-8 dark:text-white transition-colors">{sec.title}</h2>
+                                            <p className="text-zinc-600 dark:text-zinc-500 text-base md:text-lg font-light leading-relaxed transition-colors">{sec.desc}</p>
+                                        </div>
+                                        <button onClick={() => {setActiveCategory(sec.category); window.location.hash = "#vitrine"}} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest border-b-2 border-red-600 pb-2 md:pb-3 hover:text-red-600 dark:text-white dark:hover:text-red-600 transition-all flex items-center gap-2 group">Ver coleção <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" aria-hidden="true" /></button>
+                                    </header>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+                                        {PRODUCTS.filter(p => p.category === sec.category).slice(0, 4).map(p => <ProductCard key={p.id} product={p} onAddToCart={addToCart} />)}
+                                    </div>
+                                </div>
+                            </section>
+                        ))}
+                    </main>
 
                     <footer id="footer" className="bg-zinc-50 dark:bg-zinc-950 pt-24 md:pt-40 pb-16 md:pb-20 border-t dark:border-zinc-900 transition-colors">
                         <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -627,34 +753,34 @@
                                     <span className="block text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] md:tracking-[0.6em] text-red-600 mt-4">Revistaria & Co.</span>
                                     <p className="text-zinc-500 dark:text-zinc-400 text-lg md:text-xl max-w-sm my-8 md:my-12 font-light mx-auto md:mx-0 leading-relaxed italic transition-colors">Curadoria visual e tátil para colecionadores exigentes.</p>
                                     <div className="flex justify-center md:justify-start gap-4 md:gap-6">
-                                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white dark:bg-zinc-900 rounded-[20px] flex items-center justify-center shadow-sm hover:text-red-600 transition-all cursor-pointer dark:text-white dark:hover:text-red-600 transition-all"><Instagram size={24} /></div>
-                                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white dark:bg-zinc-900 rounded-[20px] flex items-center justify-center shadow-sm hover:text-red-600 transition-all cursor-pointer dark:text-white dark:hover:text-red-600 transition-all"><Phone size={24} /></div>
+                                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white dark:bg-zinc-900 rounded-[20px] flex items-center justify-center shadow-sm hover:text-red-600 transition-all cursor-pointer dark:text-white dark:hover:text-red-600 transition-all" aria-label="Instagram da Revistaria"><Instagram size={24} /></div>
+                                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white dark:bg-zinc-900 rounded-[20px] flex items-center justify-center shadow-sm hover:text-red-600 transition-all cursor-pointer dark:text-white dark:hover:text-red-600 transition-all" aria-label="Telefone de Atendimento"><Phone size={24} /></div>
                                     </div>
                                 </div>
-                                <div>
+                                <section>
                                     <h4 className="font-black uppercase tracking-[0.3em] text-[10px] mb-8 md:mb-10 dark:text-white transition-colors">Curadoria</h4>
                                     <ul className="space-y-4 md:space-y-6 text-zinc-500 text-[11px] md:text-[12px] font-bold uppercase tracking-widest">
                                         <li><a href="#books" className="hover:text-red-600 transition-colors">Edições de Luxo</a></li>
                                         <li><a href="#vitrine" className="hover:text-red-600 transition-colors">Catálogo Digital</a></li>
                                         <li><a href="#tabacaria" className="hover:text-red-600 transition-colors">VIP Lounge</a></li>
-                                        <li><a href="#" className="hover:text-red-600 transition-colors">Manuscritos</a></li>
+                                        <li><a href="#about" className="hover:text-red-600 transition-colors">Nossa História</a></li>
                                     </ul>
-                                </div>
-                                <div>
+                                </section>
+                                <section>
                                     <h4 className="font-black uppercase tracking-[0.3em] text-[10px] mb-8 md:mb-10 dark:text-white transition-colors">Editorial</h4>
                                     <ul className="space-y-4 md:space-y-6 text-zinc-500 text-[11px] md:text-[12px]">
-                                        <li className="flex gap-3 justify-center md:justify-start"><MapPin size={18} className="text-red-600" /> Av. Paulista, 1000, SP</li>
+                                        <li className="flex gap-3 justify-center md:justify-start"><MapPin size={18} className="text-red-600" aria-hidden="true" /> Av. Paulista, 1000, SP</li>
                                         <li className="flex gap-3 justify-center md:justify-start font-black dark:text-white transition-colors">editorial@cultura.art</li>
                                         <li className="text-[10px] text-zinc-500 uppercase tracking-widest">Seg - Sáb: 09h às 21h</li>
                                     </ul>
-                                </div>
+                                </section>
                             </div>
                             <div className="flex flex-col md:flex-row justify-between items-center pt-16 md:pt-20 border-t border-zinc-200 dark:border-zinc-900 gap-6">
                                 <p className="text-[9px] md:text-[10px] font-bold text-zinc-500 uppercase tracking-[0.4em]">© 2024 CULTURA EDITORIAL. EST. 1995.</p>
-                                <div className="flex gap-8 md:gap-10 text-[9px] font-black uppercase tracking-widest text-zinc-500">
+                                <nav className="flex gap-8 md:gap-10 text-[9px] font-black uppercase tracking-widest text-zinc-500">
                                     <a href="#" className="hover:text-red-600 transition-colors">Termos</a>
                                     <a href="#" className="hover:text-red-600 transition-colors">Privacidade</a>
-                                </div>
+                                </nav>
                             </div>
                         </div>
                     </footer>
