@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revistaria Cultura | Vitrine de Curadoria</title>
+    
+    <!-- External Styles & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
+    
+    <!-- React, ReactDOM & Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Import Map for ESM Modules -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom": "https://esm.sh/react-dom@18.2.0",
+        "lucide-react": "https://esm.sh/lucide-react@0.344.0",
+        "@google/genai": "https://esm.sh/@google/genai@1.37.0"
+      }
+    }
+    </script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'cart-pulse': 'cart-pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'custom-shake': 'custom-shake 0.6s cubic-bezier(.36,.07,.19,.97) both',
+                        'cart-bounce': 'cart-bounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both',
+                        'fade-up': 'fade-up 0.5s ease-out forwards',
+                        'neon-pulse': 'neon-pulse 3s ease-in-out infinite',
+                        'notification-in': 'notification-in 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards',
+                        'notification-out': 'notification-out 0.4s cubic-bezier(0.4, 0, 1, 1) forwards',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'cart-pulse': {
+                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(220, 38, 38, 0)' },
+                            '50%': { transform: 'scale(1.08)', boxShadow: '0 0 25px 2px rgba(220, 38, 38, 0.15)' },
+                        },
+                        'custom-shake': {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-4px)' },
+                            '75%': { transform: 'translateX(4px)' },
+                        },
+                        'cart-bounce': {
+                            '0%': { transform: 'scale(1) translateY(0)' },
+                            '30%': { transform: 'scale(1.3) translateY(-10px)' },
+                            '100%': { transform: 'scale(1) translateY(0)' },
+                        },
+                        'fade-up': {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'neon-pulse': {
+                            '0%, 100%': { 
+                                boxShadow: '0 0 5px rgba(220, 38, 38, 0.3), 0 0 10px rgba(220, 38, 38, 0.1)',
+                                opacity: '0.9'
+                            },
+                            '50%': { 
+                                boxShadow: '0 0 20px rgba(220, 38, 38, 0.6), 0 0 40px rgba(220, 38, 38, 0.2)',
+                                opacity: '1'
+                            },
+                        },
+                        'notification-in': {
+                            '0%': { transform: 'translateY(200%) translateX(-50%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0) translateX(-50%)', opacity: '1' },
+                        },
+                        'notification-out': {
+                            '0%': { transform: 'translateY(0) translateX(-50%)', opacity: '1' },
+                            '100%': { transform: 'translateY(200%) translateX(-50%)', opacity: '0' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #991b1b; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        * { transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+        .dark .glass { background: rgba(0, 0, 0, 0.8); }
+        
+        .neon-glow {
+            animation: neon-pulse 3s ease-in-out infinite;
+        }
+        
+        .neon-btn-hover:hover {
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.8), 0 0 60px rgba(220, 38, 38, 0.4) !important;
+            transform: translateY(-2px);
+        }
+
+        .btn-checkmark {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .no-scroll {
+            overflow: hidden !important;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-black text-gray-900 dark:text-white selection:bg-red-600 selection:text-white">
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+        import { ShoppingBag, Search, X, Plus, Sun, Moon, ArrowRight, Sparkles, Send, Loader2, Bot, MapPin, Phone, Instagram, Trash2, ArrowUpRight, ArrowUp, Menu, BookOpen, Watch, Wind, Minus, Check, ChevronDown } from 'lucide-react';
+        import { GoogleGenAI } from "@google/genai";
+
+        // --- CATALOG DATA ---
+        const PRODUCTS = [
+            // Magazines (Visualizadas em Ver Todos)
+            { id: 'm1', name: 'Vogue Italia - Sept Issue', category: 'Magazines', price: 89.90, description: 'A lendária "September Issue" focada em inovação e alta moda.', image: 'https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?q=80&w=800' },
+            { id: 'm2', name: 'Monocle - The Entrepreneurs', category: 'Magazines', price: 75.00, description: 'Guia global para negócios, design e cultura contemporânea.', image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800' },
+            { id: 'm3', name: 'Kinfolk Volume 42', category: 'Magazines', price: 95.00, description: 'Exploração visual do slow living e conexões humanas.', image: 'https://images.unsplash.com/photo-1543004471-2401c3bdbfe6?q=80&w=800' },
+            { id: 'm4', name: 'Revista Piauí - Mensal', category: 'Magazines', price: 42.00, description: 'O melhor do jornalismo literário e político do Brasil.', image: 'https://images.unsplash.com/photo-1504711432814-0238c7d949d4?q=80&w=800' },
+            { id: 'm5', name: 'The Paris Review - Fall', category: 'Magazines', price: 110.00, description: 'Entrevistas literárias históricas e ficção de vanguarda.', image: 'https://images.unsplash.com/photo-1491843351663-73149e217517?q=80&w=800' },
+            { id: 'm6', name: 'Architectural Digest (AD)', category: 'Magazines', price: 98.00, description: 'A bíblia internacional do design de interiores e arquitetura.', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800' },
+            { id: 'm7', name: 'National Geographic Classic', category: 'Magazines', price: 65.00, description: 'Ciência, aventura e fotografia de tirar o fôlego.', image: 'https://images.unsplash.com/photo-1618397746666-63405ce5d015?q=80&w=800' },
+            
+            // Books
+            { id: 'b1', name: 'O Iluminado (Luxo)', category: 'Books', price: 89.90, description: 'Edição especial do clássico de terror de Stephen King.', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800', isFeatured: true },
+            { id: 'b2', name: 'O Pequeno Príncipe', category: 'Books', price: 45.00, description: 'Edição de colecionador com ilustrações originais.', image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800' },
+            { id: 'b3', name: 'Orgulho e Preconceito', category: 'Books', price: 58.00, description: 'Capa dura exclusiva da obra-prima de Jane Austen.', image: 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=800' },
+            { id: 'b4', name: '1984 - George Orwell', category: 'Books', price: 62.00, description: 'Edição numerada da distopia mais famosa da literatura.', image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800' },
+            { id: 'b5', name: 'O Hobbit (Tolkien)', category: 'Books', price: 85.00, description: 'Tradução premium com mapas em encarte especial.', image: 'https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?q=80&w=800' },
+            { id: 'b6', name: 'Duna (Frank Herbert)', category: 'Books', price: 92.00, description: 'A maior obra de ficção científica em edição definitiva.', image: 'https://images.unsplash.com/photo-1532012197367-6849412a57ce?q=80&w=800' },
+            { id: 'b7', name: 'Drácula (Bram Stoker)', category: 'Books', price: 68.00, description: 'O mito do vampiro em edição gótica de luxo.', image: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=800' },
+
+            // Accessories
+            { id: 'a1', name: 'Boné New Era 59FIFTY', category: 'Accessories', price: 189.00, description: 'Ícone streetwear com bordado de alta definição.', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=800' },
+            { id: 'a2', name: 'Seiko 5 Automatic', category: 'Accessories', price: 1450.00, description: 'Relógio mecânico japonês de precisão absoluta.', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800', isFeatured: true },
+            { id: 'a3', name: 'Carteira Bellroy Slim', category: 'Accessories', price: 320.00, description: 'Couro premium curtido de forma sustentável.', image: 'https://images.unsplash.com/photo-1627123430985-63df0288be82?q=80&w=800' },
+            { id: 'a4', name: 'Mochila Peak Design', category: 'Accessories', price: 1850.00, description: 'A favorita dos nômades digitais e fotógrafos.', image: 'https://images.unsplash.com/photo-1553062407-98eeb14c20df?q=80&w=800' },
+            { id: 'a5', name: 'Ray-Ban Clubmaster', category: 'Accessories', price: 890.00, description: 'Design vintage para intelectuais modernos.', image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800' },
+            { id: 'a6', name: 'Relógio Nero Minimal', category: 'Accessories', price: 1150.00, description: 'Minimalismo escandinavo com pulseira mesh.', image: 'https://images.unsplash.com/photo-1508685096489-7a689470145b?q=80&w=800' },
+            { id: 'a7', name: 'Boné Heritage Sarja', category: 'Accessories', price: 145.00, description: 'Algodão de alta gramatura com lavagem vintage.', image: 'https://images.unsplash.com/photo-1556306535-0f09a537f0a3?q=80&w=800' },
+
+            // Tabacaria
+            { id: 't1', name: 'Cachimbo Savinelli', category: 'Tabacaria', price: 950.00, description: 'Madeira briar italiana esculpida à mão.', image: 'https://images.unsplash.com/photo-1589131013405-f938c41ec2b2?q=80&w=800' },
+            { id: 't2', name: 'Isqueiro Zippo Brushed', category: 'Tabacaria', price: 420.00, description: 'Garantia vitalícia e som icônico.', image: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?q=80&w=800' },
+            { id: 't3', name: 'Narguilé Khalil Mamoon', category: 'Tabacaria', price: 850.00, description: 'Autenticidade egípcia em tri-metal.', image: 'https://images.unsplash.com/photo-1534067783941-51c9c23eccfd?q=80&w=800', isFeatured: true },
+            { id: 't4', name: 'Tangiers Cane Mint', category: 'Tabacaria', price: 120.00, description: 'A menta noir definitiva para lounge.', image: 'https://images.unsplash.com/photo-1527137341206-182ad48c59ff?q=80&w=800' },
+            { id: 't5', name: 'Cortador de Charutos S.T.', category: 'Tabacaria', price: 1200.00, description: 'Lâminas de aço cirúrgico para corte preciso.', image: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?q=80&w=800' },
+            { id: 't6', name: 'Steamulation Pro X', category: 'Tabacaria', price: 2900.00, description: 'Engenharia alemã para narguilé premium.', image: 'https://images.unsplash.com/photo-1529154691717-3306083d869e?q=80&w=800' },
+            { id: 't7', name: 'Fogareiro Blindado Art', category: 'Tabacaria', price: 125.00, description: 'Segurança e agilidade para o carvão.', image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800' }
+        ];
+
+        // --- COMPONENTS ---
+
+        const Navbar = ({ cartCount, onCartClick, isAdding, darkMode, onToggleTheme, onResetFilter }) => {
+            const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+            // Effect to lock scroll when menu is open
+            React.useEffect(() => {
+                if (isMenuOpen) {
+                    document.body.classList.add('no-scroll');
+                } else {
+                    document.body.classList.remove('no-scroll');
+                }
+                return () => document.body.classList.remove('no-scroll');
+            }, [isMenuOpen]);
+
+            const closeMenu = () => setIsMenuOpen(false);
+
+            return (
+                <nav className="sticky top-0 z-[100] bg-white/95 dark:bg-black/95 backdrop-blur-md border-b border-gray-100 dark:border-zinc-900 px-4 md:px-12 py-4 md:py-5 transition-all">
+                    <div className="max-w-7xl mx-auto flex justify-between items-center">
+                        <div className="flex items-center gap-3 md:gap-6">
+                            {/* Hamburger - Visible only on mobile */}
+                            <button 
+                                className="md:hidden dark:text-white p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-xl transition-colors z-[110]" 
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                aria-label="Menu"
+                            >
+                                {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
+                            </button>
+                            
+                            <div className="flex flex-col cursor-pointer group" onClick={() => { window.scrollTo({top: 0, behavior: 'smooth'}); closeMenu(); onResetFilter(); }}>
+                                <span className="text-2xl sm:text-3xl font-bold tracking-tighter serif text-gray-900 dark:text-white leading-none group-hover:text-red-600 transition-colors">Cultura</span>
+                                <span className="text-[7px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-red-600 font-bold mt-1">Revistaria & Co.</span>
+                            </div>
+                        </div>
+                        
+                        {/* Desktop Menu - Direct links synchronized with page sections */}
+                        <div className="hidden md:flex items-center space-x-8 lg:space-x-10 text-[10px] lg:text-[11px] font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-widest">
+                            <a href="#vitrine" onClick={onResetFilter} className="hover:text-red-600 transition-colors whitespace-nowrap">Catálogo</a>
+                            <a href="#books" className="hover:text-red-600 transition-colors whitespace-nowrap">Livros</a>
+                            <a href="#accessories" className="hover:text-red-600 transition-colors whitespace-nowrap">Acessórios</a>
+                            <a href="#tabacaria" className="hover:text-red-600 transition-colors whitespace-nowrap">Tabacaria</a>
+                            <a href="#footer" className="hover:text-red-600 transition-colors whitespace-nowrap">Sobre</a>
+                        </div>
+
+                        <div className="flex items-center gap-2 sm:gap-4">
+                            <button 
+                                onClick={onToggleTheme} 
+                                className="p-2.5 bg-gray-50 dark:bg-zinc-900/50 rounded-xl text-gray-500 hover:text-red-600 transition-all border border-transparent dark:border-zinc-800"
+                                aria-label="Alternar Tema"
+                            >
+                                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                            </button>
+                            <button 
+                                className={`relative p-2.5 rounded-xl text-white shadow-lg transition-all ${isAdding ? 'bg-red-600 animate-cart-bounce shadow-[0_0_30px_rgba(220,38,38,0.6)]' : 'bg-black dark:bg-red-600 neon-glow neon-btn-hover'}`} 
+                                onClick={onCartClick}
+                                aria-label="Abrir Sacola"
+                            >
+                                <ShoppingBag size={20} />
+                                {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-white dark:bg-black text-red-600 text-[9px] w-5 h-5 flex items-center justify-center rounded-full font-black border border-red-600 shadow-sm">{cartCount}</span>}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Mobile Menu Overlay - Synchronized categories */}
+                    {isMenuOpen && (
+                        <div className="md:hidden fixed inset-0 z-[90] bg-white dark:bg-black backdrop-blur-xl animate-in fade-in slide-in-from-top-4 duration-300 h-screen w-screen">
+                            <div className="pt-24 px-10 flex flex-col gap-6 h-full overflow-y-auto">
+                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-red-600 mb-2 block">Menu Mobile</span>
+                                <a href="#vitrine" className="text-4xl font-bold serif border-b dark:border-zinc-800 pb-4 text-zinc-900 dark:text-white" onClick={() => { closeMenu(); onResetFilter(); }}>Catálogo Geral</a>
+                                <a href="#books" className="text-4xl font-bold serif border-b dark:border-zinc-800 pb-4 text-zinc-900 dark:text-white" onClick={closeMenu}>Livros</a>
+                                <a href="#accessories" className="text-4xl font-bold serif border-b dark:border-zinc-800 pb-4 text-zinc-900 dark:text-white" onClick={closeMenu}>Acessórios</a>
+                                <a href="#tabacaria" className="text-4xl font-bold serif border-b dark:border-zinc-800 pb-4 text-zinc-900 dark:text-white" onClick={closeMenu}>Tabacaria</a>
+                                
+                                <div className="mt-8 pt-8 border-t dark:border-zinc-800">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 mb-6 block">Institucional</span>
+                                    <div className="flex flex-col gap-4">
+                                        <a href="#footer" className="text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-red-600" onClick={closeMenu}>Sobre Nós</a>
+                                        <a href="#footer" className="text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-red-600" onClick={closeMenu}>Atendimento</a>
+                                    </div>
+                                </div>
+
+                                <div className="mt-auto pb-12 space-y-6">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">Presença Digital</p>
+                                    <div className="flex gap-6">
+                                        <div className="w-14 h-14 bg-zinc-100 dark:bg-zinc-900 rounded-[22px] flex items-center justify-center text-zinc-900 dark:text-white"><Instagram size={24} /></div>
+                                        <div className="w-14 h-14 bg-zinc-100 dark:bg-zinc-900 rounded-[22px] flex items-center justify-center text-zinc-900 dark:text-white"><Phone size={24} /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </nav>
+            );
+        };
+
+        const ProductCard = ({ product, onAddToCart }) => {
+            const [isSuccess, setIsSuccess] = React.useState(false);
+
+            const handleAdd = () => {
+                onAddToCart(product);
+                setIsSuccess(true);
+                setTimeout(() => setIsSuccess(false), 1500);
+            };
+
+            return (
+                <div className="group bg-white dark:bg-zinc-900/40 rounded-[32px] overflow-hidden border border-gray-100 dark:border-zinc-800 flex flex-col h-full hover:shadow-[0_40px_80px_-15px_rgba(220,38,38,0.1)] transition-all duration-500">
+                    <div className="relative aspect-[4/5] m-2.5 rounded-[24px] overflow-hidden bg-gray-50 dark:bg-zinc-800">
+                        <img 
+                            src={product.image} 
+                            alt={`Imagem do produto: ${product.name}, Categoria ${product.category}`} 
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" 
+                            loading="lazy" 
+                        />
+                        {product.isFeatured && <span className="absolute top-4 left-4 bg-red-600 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">Featured</span>}
+                    </div>
+                    <div className="p-6 flex flex-col flex-grow">
+                        <span className="text-[10px] text-red-600 font-black uppercase tracking-[0.2em] mb-2">{product.category}</span>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight serif line-clamp-2">{product.name}</h3>
+                        <p className="text-gray-500 dark:text-zinc-400 text-xs line-clamp-2 mb-6 leading-relaxed flex-grow">{product.description}</p>
+                        <div className="mt-auto pt-4 border-t border-gray-100 dark:border-zinc-800 flex items-center justify-between">
+                            <span className="text-2xl font-bold text-gray-900 dark:text-white serif">R$ {product.price.toFixed(2)}</span>
+                            <button 
+                                onClick={handleAdd} 
+                                className={`p-2.5 rounded-xl transition-all active:scale-90 shadow-lg ${isSuccess ? 'bg-green-600 text-white shadow-green-600/20' : 'bg-red-600 text-white hover:bg-red-500 shadow-red-600/20'}`}
+                            >
+                                <div className="btn-checkmark">
+                                    {isSuccess ? <Check size={18} className="animate-in zoom-in duration-300" /> : <Plus size={18} />}
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const FloatingNotification = ({ message, isVisible }) => (
+            <div className={`fixed bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 z-[200] pointer-events-none transition-all duration-500 w-[90%] sm:w-auto ${isVisible ? 'animate-notification-in' : 'animate-notification-out'}`}>
+                <div className="bg-zinc-900/95 dark:bg-white/98 backdrop-blur-2xl text-white dark:text-black px-6 sm:px-8 py-4 sm:py-5 rounded-[20px] sm:rounded-full shadow-2xl border border-white/10 dark:border-black/5 flex items-center justify-between sm:justify-start gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
+                        <div className="bg-green-500 dark:bg-green-600 p-2 rounded-full text-white flex-shrink-0 animate-in zoom-in spin-in duration-500">
+                            <Check size={16} strokeWidth={4} />
+                        </div>
+                        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap truncate">{message}</span>
+                    </div>
+                    <div className="hidden sm:block w-px h-4 bg-white/20 dark:bg-black/10 mx-2" />
+                    <span className="text-[8px] sm:text-[9px] font-bold text-red-500 dark:text-red-600 uppercase tracking-widest hidden sm:block">Curadoria Atualizada</span>
+                </div>
+            </div>
+        );
+
+        const CartDrawer = ({ isOpen, onClose, items, onUpdateQuantity, onRemove, darkMode }) => {
+            const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            if (!isOpen) return null;
+            return (
+                <div className={`fixed inset-0 z-[150] ${darkMode ? 'dark' : ''}`}>
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={onClose} />
+                    <div className="absolute top-0 right-0 h-full w-full sm:max-w-md bg-white dark:bg-zinc-950 flex flex-col animate-in slide-in-from-right duration-500 ease-out border-l dark:border-zinc-900 shadow-2xl">
+                        {/* Header Sacola */}
+                        <div className="p-8 pb-6 flex justify-between items-center border-b dark:border-zinc-900/50">
+                            <div className="flex flex-col">
+                                <h2 className="text-3xl font-bold serif dark:text-white leading-tight">Sacola</h2>
+                                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 mt-1">{items.length} {items.length === 1 ? 'item' : 'itens'} na curadoria</span>
+                            </div>
+                            <button onClick={onClose} className="p-3 bg-gray-50 dark:bg-zinc-900 rounded-full text-zinc-400 hover:text-red-600 transition-all">
+                                <X size={24} />
+                            </button>
+                        </div>
+
+                        {/* Lista de Itens */}
+                        <div className="flex-grow overflow-y-auto p-8 space-y-10">
+                            {items.length === 0 ? (
+                                <div className="h-full flex flex-col items-center justify-center text-zinc-400 text-center space-y-6">
+                                    <div className="w-24 h-24 bg-zinc-50 dark:bg-zinc-900/50 rounded-full flex items-center justify-center">
+                                        <ShoppingBag size={40} strokeWidth={1} />
+                                    </div>
+                                    <div className="max-w-[200px]">
+                                        <p className="serif italic text-lg leading-relaxed mb-4">Sua sacola de curadoria está vazia.</p>
+                                        <button onClick={onClose} className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 hover:underline">Continuar explorando</button>
+                                    </div>
+                                </div>
+                            ) : items.map(item => (
+                                <div key={item.id} className="flex gap-6 group">
+                                    <div className="relative w-24 h-32 flex-shrink-0 overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900">
+                                        <img 
+                                            src={item.image} 
+                                            alt={`Imagem do produto: ${item.name}`} 
+                                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                                        />
+                                    </div>
+                                    <div className="flex-grow flex flex-col justify-between py-1">
+                                        <div>
+                                            <div className="flex justify-between items-start gap-4">
+                                                <h4 className="text-sm font-bold dark:text-white leading-tight group-hover:text-red-600 transition-colors">{item.name}</h4>
+                                                <button onClick={() => onRemove(item.id)} className="p-1 text-zinc-300 hover:text-red-600 transition-colors">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                            <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mt-1 block">{item.category}</span>
+                                        </div>
+                                        
+                                        <div className="flex items-center justify-between mt-auto">
+                                            <div className="flex items-center bg-zinc-50 dark:bg-zinc-900 rounded-xl p-1 border dark:border-zinc-800">
+                                                <button onClick={() => onUpdateQuantity(item.id, -1)} className="w-7 h-7 flex items-center justify-center dark:text-white hover:text-red-600 transition-colors">
+                                                    <Minus size={12} />
+                                                </button>
+                                                <span className="w-8 text-center text-[11px] font-black dark:text-white">{item.quantity}</span>
+                                                <button onClick={() => onUpdateQuantity(item.id, 1)} className="w-7 h-7 flex items-center justify-center dark:text-white hover:text-red-600 transition-colors">
+                                                    <Plus size={12} />
+                                                </button>
+                                            </div>
+                                            <span className="font-bold text-red-600 serif text-lg tracking-tight">R$ {(item.price * item.quantity).toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Rodapé e Checkout */}
+                        {items.length > 0 && (
+                            <div className="p-8 pt-6 border-t dark:border-zinc-900 bg-zinc-50/50 dark:bg-black/40 backdrop-blur-sm">
+                                <div className="space-y-3 mb-8">
+                                    <div className="flex justify-between items-center text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+                                        <span>Subtotal</span>
+                                        <span className="dark:text-zinc-300">R$ {total.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+                                        <span>Curadoria Express</span>
+                                        <span className="text-green-600">Grátis</span>
+                                    </div>
+                                    <div className="flex justify-between items-end pt-4">
+                                        <span className="text-[11px] font-black uppercase tracking-[0.3em] dark:text-white">Total</span>
+                                        <span className="text-4xl font-bold serif text-red-600 tracking-tighter">R$ {total.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                                <button className="w-full bg-red-600 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] shadow-[0_20px_40px_-10px_rgba(220,38,38,0.4)] hover:bg-red-500 transition-all flex items-center justify-center gap-3 neon-glow neon-btn-hover group">
+                                    Finalizar no WhatsApp <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                </button>
+                                <p className="text-center text-[9px] text-zinc-400 font-medium mt-6 uppercase tracking-widest">Atendimento VIP em tempo real</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const ChatAssistant = ({ darkMode }) => {
+            const [isOpen, setIsOpen] = React.useState(false);
+            const [query, setQuery] = React.useState('');
+            const [response, setResponse] = React.useState(null);
+            const [loading, setLoading] = React.useState(false);
+
+            const handleAsk = async (e) => {
+                e.preventDefault();
+                if (!query.trim()) return;
+                setLoading(true); setResponse(null);
+                try {
+                    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+                    const productStr = PRODUCTS.map(p => `${p.name} (${p.category}): ${p.description}`).join('\n');
+                    const res = await ai.models.generateContent({
+                        model: 'gemini-3-flash-preview',
+                        contents: `Você é o Curador da Revistaria Cultura. Indique 1 ou 2 itens do catálogo. Catálogo: ${productStr} Pergunta: "${query}"`
+                    });
+                    setResponse(res.text);
+                } catch (err) {
+                    setResponse("Não consegui acessar a curadoria no momento. Explore nossa seção de edições especiais!");
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            return (
+                <div className={`fixed bottom-8 right-8 z-[60] ${darkMode ? 'dark' : ''}`}>
+                    {isOpen ? (
+                        <div className="bg-white dark:bg-zinc-950 rounded-[32px] shadow-2xl w-80 sm:w-96 border dark:border-zinc-800 overflow-hidden animate-in zoom-in duration-300">
+                            <div className="bg-red-600 p-5 text-white flex justify-between items-center">
+                                <div className="flex items-center gap-3"><Bot size={20} /><span className="font-black text-[10px] uppercase tracking-widest">Curador Editorial</span></div>
+                                <button onClick={() => setIsOpen(false)}><X size={20} /></button>
+                            </div>
+                            <div className="p-6 h-80 overflow-y-auto bg-gray-50/50 dark:bg-zinc-900/30">
+                                {response ? <div className="bg-white dark:bg-zinc-800 p-5 rounded-2xl text-xs leading-relaxed dark:text-gray-200 shadow-sm">{response}</div> : loading ? <div className="h-full flex flex-col items-center justify-center text-red-600"><Loader2 className="animate-spin mb-2" size={32} /><span className="text-[10px] font-black uppercase tracking-widest">Pesquisando...</span></div> : <p className="text-center text-gray-400 italic text-xs py-20 serif">"Qual seu interesse literário hoje?"</p>}
+                            </div>
+                            <form onSubmit={handleAsk} className="p-4 bg-white dark:bg-zinc-950 border-t dark:border-zinc-800 flex gap-2">
+                                <input type="text" placeholder="Deseja uma recomendação?" value={query} onChange={(e) => setQuery(e.target.value)} className="flex-grow text-xs bg-gray-50 dark:bg-zinc-900 border-none rounded-xl px-5 py-3 dark:text-white" />
+                                <button type="submit" className="bg-red-600 text-white p-3 rounded-xl shadow-lg shadow-red-600/20"><Send size={18} /></button>
+                            </form>
+                        </div>
+                    ) : (
+                        <button onClick={() => setIsOpen(true)} className="bg-red-600 text-white p-5 rounded-[24px] shadow-2xl shadow-red-600/40 hover:scale-105 transition-all flex items-center gap-3 group neon-glow neon-btn-hover">
+                            <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap font-black text-[10px] uppercase tracking-[0.2em]">Curadoria Ativa</span>
+                            <Sparkles size={24} />
+                        </button>
+                    )}
+                </div>
+            );
+        };
+
+        const BackToTop = () => {
+            const [visible, setVisible] = React.useState(false);
+
+            React.useEffect(() => {
+                const toggleVisibility = () => {
+                    if (window.pageYOffset > 400) setVisible(true);
+                    else setVisible(false);
+                };
+                window.addEventListener('scroll', toggleVisibility);
+                return () => window.removeEventListener('scroll', toggleVisibility);
+            }, []);
+
+            const scrollToTop = () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            return (
+                <button 
+                    onClick={scrollToTop}
+                    className={`fixed bottom-8 left-8 z-[60] bg-white dark:bg-zinc-900 p-4 rounded-2xl shadow-2xl border dark:border-zinc-800 transition-all duration-500 hover:text-red-600 active:scale-90 ${visible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}
+                >
+                    <ArrowUp size={24} className="animate-float" />
+                </button>
+            );
+        };
+
+        // --- MAIN APPLICATION ---
+        const App = () => {
+            const [cartItems, setCartItems] = React.useState([]);
+            const [isCartOpen, setIsCartOpen] = React.useState(false);
+            const [searchQuery, setSearchQuery] = React.useState('');
+            const [activeCategory, setActiveCategory] = React.useState('All');
+            const [isAdding, setIsAdding] = React.useState(false);
+            const [darkMode, setDarkMode] = React.useState(true); 
+            const [lastAddedName, setLastAddedName] = React.useState('');
+
+            React.useEffect(() => {
+                const saved = localStorage.getItem('theme') || 'dark';
+                setDarkMode(saved === 'dark');
+            }, []);
+
+            React.useEffect(() => {
+                if (darkMode) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                } else {
+                    document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
+                }
+                localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+            }, [darkMode]);
+
+            const filtered = React.useMemo(() => PRODUCTS.filter(p => (activeCategory === 'All' || p.category === activeCategory) && (p.name.toLowerCase().includes(searchQuery.toLowerCase()))), [searchQuery, activeCategory]);
+
+            const addToCart = (product) => {
+                setCartItems(prev => {
+                    const ex = prev.find(i => i.id === product.id);
+                    if (ex) return prev.map(i => i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i);
+                    return [...prev, { ...product, quantity: 1 }];
+                });
+                setLastAddedName(product.name);
+                setIsAdding(true); 
+                setTimeout(() => setIsAdding(false), 2000);
+            };
+
+            const updateQty = (id, delta) => setCartItems(prev => prev.map(i => i.id === id ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i));
+            const remove = (id) => setCartItems(prev => prev.filter(i => i.id !== id));
+
+            // Categorias sincronizadas conforme solicitado
+            const categories = ['All', 'Books', 'Accessories', 'Tabacaria'];
+
+            const sections = [
+                { id: 'books', title: 'Vitrine de Livros', category: 'Books', icon: <BookOpen className="text-red-600" size={28} />, desc: 'Obras-primas da literatura mundial em edições seletas.' },
+                { id: 'accessories', title: 'Estilo & Acessórios', category: 'Accessories', icon: <Watch className="text-red-600" size={28} />, desc: 'Curadoria de lifestyle e itens de uso pessoal sofisticados.' },
+                { id: 'tabacaria', title: 'Lounge & Tabacaria', category: 'Tabacaria', icon: <Wind className="text-red-600" size={28} />, desc: 'Rituais de relaxamento com tradição e exclusividade.' }
+            ];
+
+            return (
+                <div className="bg-white dark:bg-black transition-colors duration-500 min-h-screen overflow-x-hidden">
+                    <Navbar cartCount={cartItems.reduce((s, i) => s + i.quantity, 0)} onCartClick={() => setIsCartOpen(true)} isAdding={isAdding} darkMode={darkMode} onToggleTheme={() => setDarkMode(!darkMode)} onResetFilter={() => setActiveCategory('All')} />
+                    
+                    <header className="relative min-h-[70vh] md:h-[85vh] flex items-center bg-zinc-50 dark:bg-zinc-950 overflow-hidden transition-colors duration-500 py-20 md:py-0">
+                        <div className="absolute inset-0 z-0">
+                            <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2000" className="w-full h-full object-cover opacity-20 dark:opacity-40 grayscale" alt="Library Background" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-black via-white/40 dark:via-black/40 to-transparent" />
+                        </div>
+                        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
+                            <div className="max-w-4xl">
+                                <span className="bg-red-600 text-white text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] px-4 md:px-6 py-2 md:py-2.5 rounded-full mb-8 md:mb-12 inline-block shadow-[0_0_20px_rgba(220,38,38,0.5)]">Legacy Selection</span>
+                                <h1 className="text-5xl sm:text-6xl lg:text-[7rem] xl:text-[8rem] font-bold mb-8 md:mb-12 serif tracking-tighter leading-[0.9] text-zinc-900 dark:text-white transition-colors">
+                                    Curadoria para <br className="hidden sm:block"/>
+                                    <span className="text-red-600 italic font-normal">Mentes Criativas.</span>
+                                </h1>
+                                <p className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-400 font-light mb-12 md:mb-16 max-w-2xl leading-relaxed transition-colors">
+                                    Do papel à cultura, descubra os itens que compõem um acervo pessoal extraordinário.
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 md:gap-8">
+                                    <a href="#vitrine" onClick={() => setActiveCategory('All')} className="bg-red-600 text-white px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:bg-red-500 transition-all flex items-center justify-center gap-3 neon-glow neon-btn-hover">
+                                        Explorar Catálogo <ArrowRight size={20} />
+                                    </a>
+                                    <button className="px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] border-2 border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white hover:border-red-600 hover:bg-red-600/5 transition-all neon-glow neon-btn-hover">
+                                        VIP Newsletter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* CATÁLOGO GERAL */}
+                    <section id="vitrine" className="py-24 md:py-40 bg-white dark:bg-black border-t dark:border-zinc-900 transition-colors">
+                        <div className="max-w-7xl mx-auto px-6 md:px-12">
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-10">
+                                <div className="max-w-lg">
+                                    <h2 className="text-4xl md:text-7xl font-bold serif mb-4 md:mb-6 dark:text-white transition-colors">Acervo Geral</h2>
+                                    <p className="text-zinc-500 dark:text-zinc-500 text-sm font-light transition-colors">Navegue em nossa curadoria completa de itens exclusivos, filtrando por suas preferências editoriais.</p>
+                                </div>
+                                <div className="flex flex-wrap gap-2 md:gap-3">
+                                    {categories.map(cat => (
+                                        <button 
+                                            key={cat} 
+                                            onClick={() => setActiveCategory(cat)} 
+                                            className={`px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] transition-all border ${activeCategory === cat ? 'bg-red-600 text-white border-red-600 shadow-xl shadow-red-600/30' : 'bg-transparent text-gray-400 border-gray-100 dark:border-zinc-800 hover:border-red-600'}`}
+                                        >
+                                            {cat === 'All' ? 'Ver Todos' : cat === 'Books' ? 'Livros' : cat === 'Accessories' ? 'Acessórios' : cat}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 md:gap-x-10 gap-y-12 md:gap-y-16">
+                                {filtered.map(p => <ProductCard key={p.id} product={p} onAddToCart={addToCart} />)}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* SEÇÕES ESPECÍFICAS */}
+                    {sections.map((sec, idx) => (
+                        <section key={sec.id} id={sec.id} className={`py-24 md:py-40 ${idx % 2 === 0 ? 'bg-zinc-50 dark:bg-zinc-950' : 'bg-white dark:bg-black'} transition-colors duration-500`}>
+                            <div className="max-w-7xl mx-auto px-6 md:px-12">
+                                <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 md:mb-24 gap-10">
+                                    <div className="max-w-2xl">
+                                        <div className="flex items-center gap-4 mb-4 md:mb-6">{sec.icon} <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] text-red-600">Editorial Choice</span></div>
+                                        <h2 className="text-4xl md:text-7xl font-bold serif mb-6 md:mb-8 dark:text-white transition-colors">{sec.title}</h2>
+                                        <p className="text-zinc-600 dark:text-zinc-500 text-base md:text-lg font-light leading-relaxed transition-colors">{sec.desc}</p>
+                                    </div>
+                                    <button onClick={() => {setActiveCategory(sec.category); window.location.hash = "#vitrine"}} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest border-b-2 border-red-600 pb-2 md:pb-3 hover:text-red-600 dark:text-white dark:hover:text-red-600 transition-all flex items-center gap-2 group">Ver coleção <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /></button>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+                                    {PRODUCTS.filter(p => p.category === sec.category).slice(0, 4).map(p => <ProductCard key={p.id} product={p} onAddToCart={addToCart} />)}
+                                </div>
+                            </div>
+                        </section>
+                    ))}
+
+                    <footer id="footer" className="bg-zinc-50 dark:bg-zinc-950 pt-24 md:pt-40 pb-16 md:pb-20 border-t dark:border-zinc-900 transition-colors">
+                        <div className="max-w-7xl mx-auto px-6 md:px-12">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-20 mb-20 md:mb-32 text-center md:text-left">
+                                <div className="col-span-1 md:col-span-2">
+                                    <span className="text-4xl md:text-5xl font-bold serif tracking-tighter dark:text-white leading-none">Cultura</span>
+                                    <span className="block text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] md:tracking-[0.6em] text-red-600 mt-4">Revistaria & Co.</span>
+                                    <p className="text-zinc-500 dark:text-zinc-400 text-lg md:text-xl max-w-sm my-8 md:my-12 font-light mx-auto md:mx-0 leading-relaxed italic transition-colors">Curadoria visual e tátil para colecionadores exigentes.</p>
+                                    <div className="flex justify-center md:justify-start gap-4 md:gap-6">
+                                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white dark:bg-zinc-900 rounded-[20px] flex items-center justify-center shadow-sm hover:text-red-600 transition-all cursor-pointer dark:text-white dark:hover:text-red-600 transition-all"><Instagram size={24} /></div>
+                                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white dark:bg-zinc-900 rounded-[20px] flex items-center justify-center shadow-sm hover:text-red-600 transition-all cursor-pointer dark:text-white dark:hover:text-red-600 transition-all"><Phone size={24} /></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 className="font-black uppercase tracking-[0.3em] text-[10px] mb-8 md:mb-10 dark:text-white transition-colors">Curadoria</h4>
+                                    <ul className="space-y-4 md:space-y-6 text-zinc-500 text-[11px] md:text-[12px] font-bold uppercase tracking-widest">
+                                        <li><a href="#books" className="hover:text-red-600 transition-colors">Edições de Luxo</a></li>
+                                        <li><a href="#vitrine" className="hover:text-red-600 transition-colors">Catálogo Digital</a></li>
+                                        <li><a href="#tabacaria" className="hover:text-red-600 transition-colors">VIP Lounge</a></li>
+                                        <li><a href="#" className="hover:text-red-600 transition-colors">Manuscritos</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 className="font-black uppercase tracking-[0.3em] text-[10px] mb-8 md:mb-10 dark:text-white transition-colors">Editorial</h4>
+                                    <ul className="space-y-4 md:space-y-6 text-zinc-500 text-[11px] md:text-[12px]">
+                                        <li className="flex gap-3 justify-center md:justify-start"><MapPin size={18} className="text-red-600" /> Av. Paulista, 1000, SP</li>
+                                        <li className="flex gap-3 justify-center md:justify-start font-black dark:text-white transition-colors">editorial@cultura.art</li>
+                                        <li className="text-[10px] text-zinc-500 uppercase tracking-widest">Seg - Sáb: 09h às 21h</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="flex flex-col md:flex-row justify-between items-center pt-16 md:pt-20 border-t border-zinc-200 dark:border-zinc-900 gap-6">
+                                <p className="text-[9px] md:text-[10px] font-bold text-zinc-500 uppercase tracking-[0.4em]">© 2024 CULTURA EDITORIAL. EST. 1995.</p>
+                                <div className="flex gap-8 md:gap-10 text-[9px] font-black uppercase tracking-widest text-zinc-500">
+                                    <a href="#" className="hover:text-red-600 transition-colors">Termos</a>
+                                    <a href="#" className="hover:text-red-600 transition-colors">Privacidade</a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+
+                    <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} items={cartItems} onUpdateQuantity={updateQty} onRemove={remove} darkMode={darkMode} />
+                    <ChatAssistant darkMode={darkMode} />
+                    <BackToTop />
+                    <FloatingNotification message={`${lastAddedName} adicionado à sacola`} isVisible={isAdding} />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
